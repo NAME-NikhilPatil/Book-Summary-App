@@ -1,318 +1,78 @@
-import 'dart:convert';
-import 'dart:io';
+import 'package:books_demo/book_bot/sections/chat.dart';
+import 'package:books_demo/book_bot/sections/chat_stream.dart';
+import 'package:books_demo/book_bot/sections/embed_batch_contents.dart';
+import 'package:books_demo/book_bot/sections/embed_content.dart';
+import 'package:books_demo/book_bot/sections/response_widget_stream.dart';
+import 'package:books_demo/book_bot/sections/stream.dart';
+import 'package:books_demo/book_bot/sections/text_and_image.dart';
+import 'package:books_demo/book_bot/sections/text_only.dart';
 import 'package:books_demo/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'models.dart';
-import 'conversation_provider.dart';
+
+class SectionItem {
+  final int index;
+  final String title;
+  final Widget widget;
+
+  SectionItem(this.index, this.title, this.widget);
+}
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ChatPageState createState() => _ChatPageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final TextEditingController _textController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-  final HttpClient _client = HttpClient();
-  final FocusNode _focusNode = FocusNode();
+  int _selectedItem = 0;
 
-  late bool first;
-  @override
-  void dispose() {
-    _client.close();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    first = true;
-  }
-
-  Future<Message?> _sendMessage(List<Map<String, String>> messages) async {
-    final url = Uri.parse('https://api.openai.com/v1/chat/completions');
-    final apiKey =
-        Provider.of<ConversationProvider>(context, listen: false).yourApiKey;
-    final proxy =
-        Provider.of<ConversationProvider>(context, listen: false).yourProxy;
-    final converter = JsonUtf8Encoder();
-
-    // send all current conversation to OpenAI
-    final body = {
-      'model': model,
-      'messages': messages,
-    };
-    // _client.findProxy = HttpClient.findProxyFromEnvironment;
-    if (proxy != "") {
-      _client.findProxy = (url) {
-        return HttpClient.findProxyFromEnvironment(url,
-            environment: {"http_proxy": proxy, "https_proxy": proxy});
-      };
-    }
-
-    try {
-      return await _client.postUrl(url).then((HttpClientRequest request) {
-        request.headers.set('Content-Type', 'application/json');
-        request.headers.set('Authorization', 'Bearer $apiKey');
-        request.add(converter.convert(body));
-        return request.close();
-      }).then((HttpClientResponse response) async {
-        var retBody = await response.transform(utf8.decoder).join();
-        if (response.statusCode == 200) {
-          final data = json.decode(retBody);
-          final completions = data['choices'] as List<dynamic>;
-          if (completions.isNotEmpty) {
-            final completion = completions[0];
-            final content = completion['message']['content'] as String;
-            // delete all the prefix '\n' in content
-            final contentWithoutPrefix =
-                content.replaceFirst(RegExp(r'^\n+'), '');
-            return Message(
-                senderId: systemSender.id, content: contentWithoutPrefix);
-          }
-        } else {
-          // invalid api key
-          // create a new dialog
-          return Message(
-              content: "API KEY is Invalid", senderId: systemSender.id);
-        }
-        return null;
-      });
-    } on Exception catch (_) {
-      return Message(content: _.toString(), senderId: systemSender.id);
-    }
-  }
-
-  //scroll to last message
-  void _scrollToLastMessage() {
-    final double height = _scrollController.position.maxScrollExtent;
-    final double lastMessageHeight =
-        _scrollController.position.viewportDimension;
-    _scrollController.animateTo(
-      height,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeOut,
-    );
-  }
-
-  void _sendMessageAndAddToChat() async {
-    // final text1 = first == true ? _textController.text + instruction : null;
-    // ignore: unrelated_type_equality_checks
-    final String text = _textController.text.trim();
-
-    if (text.isNotEmpty) {
-      _textController.clear();
-
-      // Send the user's message without the instruction
-      final userMessage = Message(senderId: userSender.id, content: text);
-      setState(() {
-        first = false;
-        // Add to current conversation
-        Provider.of<ConversationProvider>(context, listen: false)
-            .addMessage(userMessage);
-      });
-
-      // Scroll to last message
-      _scrollToLastMessage();
-
-      // Send the instruction separately (not displayed)
-
-      // Send the user's message to ChatGPT and get the assistant's response
-      final assistantMessage = await _sendMessage(
-          Provider.of<ConversationProvider>(context, listen: false)
-              .currentConversationMessages);
-
-      if (assistantMessage != null) {
-        setState(() {
-          // Add the assistant's response to the conversation
-          Provider.of<ConversationProvider>(context, listen: false)
-              .addMessage(assistantMessage);
-        });
-      }
-
-      // Scroll to last message
-      _scrollToLastMessage();
-    }
-  }
-
-  // void _sendMessageAndAddToChat() async {
-  //   const instruction =
-  //       "1. Your name is Mimo 2. You are a personal tutor bot.3. Provide answers in Mathematics, Science, English, Hindi, and Urdu.4. Respond to questions in each subject area.5. Explain in a tutoring manner";
-  //   final text = instruction + _textController.text.trim();
-  //   instruction.hidePartial();
-  //   if (text.isNotEmpty) {
-  //     _textController.clear();
-  //     final userMessage = Message(senderId: userSender.id, content: text);
-  //     setState(() {
-  //       // add to current conversation
-  //       Provider.of<ConversationProvider>(context, listen: false)
-  //           .addMessage(userMessage);
-  //     });
-
-  //     // TODO:scroll to last message
-  //     _scrollToLastMessage();
-
-  //     final assistantMessage = await _sendMessage(
-  //         Provider.of<ConversationProvider>(context, listen: false)
-  //             .currentConversationMessages);
-  //     if (assistantMessage != null) {
-  //       setState(() {
-  //         Provider.of<ConversationProvider>(context, listen: false)
-  //             .addMessage(assistantMessage);
-  //       });
-  //     }
-
-  //     // TODO:scroll to last message
-  //     _scrollToLastMessage();
-  //   }
-  // }
+  final _sections = <SectionItem>[
+    SectionItem(0, 'Stream text', const SectionTextStreamInput()),
+    SectionItem(1, 'textAndImage', const SectionTextAndImageInput()),
+    SectionItem(2, 'chat', const SectionChat()),
+    SectionItem(3, 'Stream chat', const SectionStreamChat()),
+    SectionItem(4, 'text', const SectionTextInput()),
+    SectionItem(5, 'embedContent', const SectionEmbedContent()),
+    SectionItem(6, 'batchEmbedContents', const SectionBatchEmbedContents()),
+    SectionItem(
+        7, 'response without setState()', const ResponseWidgetSection()),
+  ];
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      onVerticalDragDown: (_) => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          backgroundColor: backgroundColor,
-          elevation: 7,
-          title: const Text(
-            "Bookly: Ask about books",
-            style: TextStyle(fontSize: 18),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white, // Change this to your desired color
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        backgroundColor: primaryColor,
+        title: Text(
+          _selectedItem == 0
+              ? 'Bookly:Ask me about Books!'
+              : _sections[_selectedItem].title,
+          style: const TextStyle(
+            color: Colors.white,
           ),
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
-              )),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Consumer<ConversationProvider>(
-                builder: (context, conversationProvider, child) {
-                  return ListView.builder(
-                    controller: _scrollController,
-                    itemCount: conversationProvider.currentConversationLength,
-                    itemBuilder: (BuildContext context, int index) {
-                      Message message = conversationProvider
-                          .currentConversation.messages[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 16.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (message.senderId != userSender.id)
-                              CircleAvatar(
-                                backgroundImage:
-                                    AssetImage(systemSender.avatarAssetPath),
-                                radius: 16.0,
-                              )
-                            else
-                              const SizedBox(width: 24.0),
-                            const SizedBox(width: 8.0),
-                            Expanded(
-                              child: Align(
-                                alignment: message.senderId == userSender.id
-                                    ? Alignment.centerRight
-                                    : Alignment.centerLeft,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 16.0),
-                                  decoration: BoxDecoration(
-                                    color: message.senderId == userSender.id
-                                        ? primaryColor
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.05),
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    message.content,
-                                    style: TextStyle(
-                                      color: message.senderId == userSender.id
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8.0),
-                            if (message.senderId == userSender.id)
-                              CircleAvatar(
-                                backgroundImage:
-                                    AssetImage(userSender.avatarAssetPath),
-                                radius: 16.0,
-                              )
-                            else
-                              const SizedBox(width: 24.0),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-
-            // input box
-            Container(
-              decoration: BoxDecoration(
-                color: kprimaryColor,
-                borderRadius: BorderRadius.circular(32.0),
-              ),
-              margin:
-                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _textController,
-                      decoration: const InputDecoration.collapsed(
-                          hintText: 'Type your message...'),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.send,
-                      color: primaryColor,
-                    ),
-                    onPressed:
-                        // listen to apikey to see if changed
-                        Provider.of<ConversationProvider>(context, listen: true)
-                                    .yourApiKey ==
-                                "YOUR_API_KEY"
-                            ? () {
-                                // showRenameDialog(context);
-                              }
-                            : () {
-                                _sendMessageAndAddToChat();
-                              },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        // actions: [
+        //   PopupMenuButton<int>(
+        //     initialValue: _selectedItem,
+        //     onSelected: (value) => setState(() => _selectedItem = value),
+        //     itemBuilder: (context) => _sections.map((e) {
+        //       return PopupMenuItem<int>(value: e.index, child: Text(e.title));
+        //     }).toList(),
+        //     child: const Icon(Icons.more_vert_rounded),
+        //   )
+        // ],
+      ),
+      body: IndexedStack(
+        index: _selectedItem,
+        children: _sections.map((e) => e.widget).toList(),
       ),
     );
   }

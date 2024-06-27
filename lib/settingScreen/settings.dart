@@ -1,3 +1,4 @@
+import 'package:books_demo/SplashScreen/splash_sceen.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -62,14 +63,17 @@ class SettingsScreen extends StatelessWidget {
           ElevatedButton(
             child: const Text('Log out'),
             onPressed: () {
-              // TODO: Implement log out logic
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen(),
+                ),
+              );
             },
           ),
           TextButton(
-            child: const Text('sharmilapetil4289@gmail.com'),
-            onPressed: () {
-              // TODO: Implement contact support logic
-            },
+            child: const Text('nikhil@gmail.com'),
+            onPressed: () {},
           ),
           const Center(
             child: Text(

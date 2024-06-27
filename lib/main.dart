@@ -1,10 +1,7 @@
-import 'package:books_demo/HomeScreen/homescreen.dart';
-import 'package:books_demo/SplashScreen/splash_sceen.dart';
-import 'package:books_demo/book_bot/conversation_provider.dart';
-import 'package:books_demo/firebase/firebase_options.dart';
 import 'package:books_demo/navigationBar/navigatin_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,13 +10,14 @@ void main() async {
 
   await Firebase.initializeApp();
   final prefs = await SharedPreferences.getInstance();
+  Gemini.init(
+    apiKey: 'AIzaSyCxMTgde8BmvExDxUCbgCE2791rR0CBJAM',
+    enableDebugging: true,
+  );
 
   bool login = prefs.containsKey('userId') ? true : false;
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ConversationProvider(),
-      child: MyApp(),
-    ),
+    MyApp(),
   );
 }
 
@@ -36,7 +34,7 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(),
+      home: Navigation_Bar(),
     );
   }
 }

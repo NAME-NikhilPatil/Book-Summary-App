@@ -21,6 +21,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   double _textSize = 18.0; // Updated default text size to 18
   PageController _pageController = PageController();
   int _currentPage = 0;
+  bool _showFunnySummaries = false;
 
   @override
   void initState() {
@@ -72,6 +73,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
     );
   }
 
+  void _fetchFunnySummaries() {
+    setState(() {
+      _showFunnySummaries = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +90,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
           IconButton(
             icon: const Icon(Icons.text_fields),
             onPressed: _showTextSizeAdjuster,
+          ),
+          IconButton(
+            icon:
+                const Icon(Icons.sentiment_very_satisfied), // Funny button icon
+            onPressed: _fetchFunnySummaries,
           ),
         ],
       ),
@@ -99,11 +111,17 @@ class _SummaryScreenState extends State<SummaryScreen> {
             return const Center(child: Text("No Data Found"));
           }
 
-          List<String> headlines =
-              List<String>.from(snapshot.data!['headlines']);
-          int no_of_headlines = headlines.length;
-          List<String> summaries =
-              List<String>.from(snapshot.data!['summaries']);
+          List<String> headlines = _showFunnySummaries
+              ? List<String>.from(snapshot.data!['fheadlines'])
+              : List<String>.from(snapshot.data!['headlines']);
+
+          int no_of_headlines = _showFunnySummaries
+              ? List<String>.from(snapshot.data!['fheadlines']).length
+              : List<String>.from(snapshot.data!['headlines']).length;
+
+          List<String> summaries = _showFunnySummaries
+              ? List<String>.from(snapshot.data!['fsummaries'])
+              : List<String>.from(snapshot.data!['summaries']);
 
           return Column(
             children: [
@@ -130,7 +148,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                             style: TextStyle(
                               fontSize: _textSize,
                             ),
-                            textAlign: TextAlign.justify, // Justify alignment
+                            textAlign: TextAlign.justify,
                           ),
                         ],
                       ),
