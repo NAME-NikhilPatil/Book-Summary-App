@@ -1,8 +1,20 @@
 import 'package:books_demo/BookSummaryScreen/summary_page.dart';
+import 'package:books_demo/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailPage extends StatelessWidget {
-  const BookDetailPage({Key? key}) : super(key: key);
+  BookDetailPage({
+    Key? key,
+    required this.imagePath,
+    required this.title,
+    required this.description,
+    required this.author,
+  }) : super(key: key);
+
+  final String imagePath;
+  final String title;
+  final String description;
+  final String author;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +57,7 @@ class BookDetailPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Image.asset(
-                      'assets/book_cover1.png',
+                      imagePath,
                       height: 200,
                     ),
                     const SizedBox(height: 20),
@@ -58,65 +70,67 @@ class BookDetailPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'What The Most Successful People Do Before Breakfast',
+                    Text(
+                      title,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
+                      style: const TextStyle(
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Laura Vanderkam',
-                      style: TextStyle(
+                    Text(
+                      author,
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.list,
                               size: 16,
                               color: Colors.grey,
                             ),
-                            const SizedBox(width: 4),
-                            const Text(
+                            SizedBox(width: 4),
+                            Text(
                               '7 key points',
-                              style: TextStyle(color: Colors.grey),
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(width: 20),
+                        SizedBox(width: 20),
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.access_time,
                               size: 16,
                               color: Colors.grey,
                             ),
-                            const SizedBox(width: 4),
-                            const Text(
+                            SizedBox(width: 4),
+                            Text(
                               '13min',
                               style: TextStyle(color: Colors.grey),
                             ),
                           ],
                         ),
-                        const SizedBox(width: 20),
+                        SizedBox(width: 20),
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.flash_on,
                               size: 16,
                               color: Colors.grey,
                             ),
-                            const SizedBox(width: 4),
-                            const Text(
+                            SizedBox(width: 4),
+                            Text(
                               '6 insights',
                               style: TextStyle(color: Colors.grey),
                             ),
@@ -136,11 +150,12 @@ class BookDetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                "See how successful people start their day and achieve so much. "
-                "Find the morning routine that suits you most to improve your "
-                "personal and professional lives and live with joy.",
-                style: TextStyle(
+              Text(
+                // "See how successful people start their day and achieve so much. "
+                // "Find the morning routine that suits you most to improve your "
+                // "personal and professional lives and live with joy.",
+                description,
+                style: const TextStyle(
                   fontSize: 16,
                 ),
               ),
@@ -151,23 +166,29 @@ class BookDetailPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            SummaryScreen(), // Replace with your BookDetails widget
+                        builder: (context) => SummaryScreen(
+                          title: title,
+                          documentId: 'EakVkTRO0zLD1L6GyfsQ',
+                        ), // Replace with your BookDetails widget
                       ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 60,
+                      horizontal: 80,
                       vertical: 15,
                     ),
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Read',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: kprimaryColor,
+                    ),
                   ),
                 ),
               ),

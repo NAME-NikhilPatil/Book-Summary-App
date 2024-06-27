@@ -5,13 +5,14 @@ class BookSummaryCard extends StatelessWidget {
   final String imagePath;
   final String title;
   final String description;
+  final String author;
 
-  const BookSummaryCard({
-    Key? key,
-    required this.imagePath,
-    required this.title,
-    required this.description,
-  }) : super(key: key);
+  const BookSummaryCard(
+      {super.key,
+      required this.imagePath,
+      required this.title,
+      required this.description,
+      required this.author});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +22,12 @@ class BookSummaryCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                BookDetailPage(), // Replace with your BookDetails widget
+            builder: (context) => BookDetailPage(
+              imagePath: imagePath,
+              title: title,
+              description: description,
+              author: author,
+            ), // Replace with your BookDetails widget
           ),
         );
       },

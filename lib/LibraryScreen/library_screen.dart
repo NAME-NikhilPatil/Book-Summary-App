@@ -146,30 +146,35 @@ class _LibraryScreenState extends State<LibraryScreen>
         children: [
           BookSummaryCard(
             title: 'The 80/20 CEO',
+            author: "Simon Sinek",
             imagePath: 'assets/book_cover1.png',
             description: 'Bill Canady',
           ),
           SizedBox(width: 12),
           BookSummaryCard(
             title: 'The Art of Seduction',
+            author: "Simon Sinek",
             imagePath: 'assets/book_cover2.png',
             description: 'Robert Greene, BA',
           ),
           SizedBox(width: 12),
           BookSummaryCard(
             title: 'Not Nice',
+            author: "Simon Sinek",
             imagePath: 'assets/book_cover1.png',
             description: 'Dr. Aziz Gazipura',
           ),
           SizedBox(width: 12),
           BookSummaryCard(
             title: 'Atomic Habits',
+            author: "Simon Sinek",
             imagePath: 'assets/book_cover2.png',
             description: 'James Clear',
           ),
           SizedBox(width: 12),
           BookSummaryCard(
             title: 'How to Make People Like You',
+            author: "Simon Sinek",
             imagePath: 'assets/book_cover1.png',
             description: 'Nicholas Boothman',
           ),

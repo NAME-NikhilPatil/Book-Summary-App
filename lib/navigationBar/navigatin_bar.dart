@@ -1,3 +1,4 @@
+import 'package:books_demo/book_bot/chat_page.dart';
 import 'package:books_demo/constants/constants.dart';
 import 'package:books_demo/ExploreScreen/explore_screen.dart';
 import 'package:books_demo/HomeScreen/homescreen.dart';
@@ -13,10 +14,10 @@ class Navigation_Bar extends StatefulWidget {
 class _Navigation_BarState extends State<Navigation_Bar> {
   int _selectedIndex = 0;
 
-  static List<Widget> _pages = <Widget>[
+  static final List<Widget> _pages = <Widget>[
     HomeScreen(), // Update Home Screen content here
-    ExploreScreen(),
-    LibraryScreen(),
+    const ExploreScreen(),
+    const LibraryScreen(),
     ProfileScreen(),
   ];
 

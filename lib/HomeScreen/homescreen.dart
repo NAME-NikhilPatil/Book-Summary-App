@@ -1,13 +1,29 @@
+import 'package:books_demo/book_bot/chat_page.dart';
 import 'package:books_demo/components/book_card.dart';
 import 'package:books_demo/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ChatPage(),
+              ));
+        },
+        backgroundColor: primaryColor,
+        child: Icon(
+          FontAwesomeIcons.lightbulb,
+          color: kprimaryColor,
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -128,11 +144,11 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     BookSummaryCard(
-                      imagePath: 'assets/book_cover1.png',
-                      title:
-                          'What the Most Successful People Do Before Breakfast',
+                      imagePath: 'assets/start_with_why.jpg',
+                      title: 'Start with Why',
+                      author: 'Simon Sinek',
                       description:
-                          'A short guide to making over your mornings and life',
+                          'Discover the principles necessary for building a great team and allowing people to do what inspires them.',
                     ),
                     SizedBox(
                       width: 12,
@@ -140,6 +156,7 @@ class HomeScreen extends StatelessWidget {
                     BookSummaryCard(
                       imagePath: 'assets/book_cover2.png',
                       title: 'The 12 Week Year',
+                      author: 'Simon Sinek',
                       description:
                           'Get more done in 12 weeks than others do in 12 months',
                     ),
@@ -150,6 +167,7 @@ class HomeScreen extends StatelessWidget {
                       imagePath: 'assets/book_cover1.png',
                       title:
                           'What the Most Successful People Do Before Breakfast',
+                      author: 'Simon Sinek',
                       description:
                           'A short guide to making over your mornings and life',
                     ),
@@ -159,6 +177,7 @@ class HomeScreen extends StatelessWidget {
                     BookSummaryCard(
                       imagePath: 'assets/book_cover2.png',
                       title: 'The 12 Week Year',
+                      author: 'Simon Sinek',
                       description:
                           'Get more done in 12 weeks than others do in 12 months',
                     ),
@@ -217,4 +236,3 @@ class CategoryCard extends StatelessWidget {
     );
   }
 }
-
