@@ -1,3 +1,4 @@
+import 'package:books_demo/Translation%20Screen/translate_screen.dart';
 import 'package:books_demo/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -88,7 +89,11 @@ class _LibraryScreenState extends State<LibraryScreen>
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
-            // action to be performed when button is pressed
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Translation_Screen(),
+                ));
           },
           // you can change the text as you like
           style: ElevatedButton.styleFrom(
@@ -147,6 +152,7 @@ class _LibraryScreenState extends State<LibraryScreen>
           BookSummaryCard(
             title: 'The 80/20 CEO',
             author: "Simon Sinek",
+            documentId: 'EakVkTRO0zLD1L6GyfsQ',
             imagePath: 'assets/book_cover1.png',
             description: 'Bill Canady',
           ),
@@ -154,6 +160,7 @@ class _LibraryScreenState extends State<LibraryScreen>
           BookSummaryCard(
             title: 'The Art of Seduction',
             author: "Simon Sinek",
+            documentId: 'EakVkTRO0zLD1L6GyfsQ',
             imagePath: 'assets/book_cover2.png',
             description: 'Robert Greene, BA',
           ),
@@ -161,6 +168,7 @@ class _LibraryScreenState extends State<LibraryScreen>
           BookSummaryCard(
             title: 'Not Nice',
             author: "Simon Sinek",
+            documentId: 'EakVkTRO0zLD1L6GyfsQ',
             imagePath: 'assets/book_cover1.png',
             description: 'Dr. Aziz Gazipura',
           ),
@@ -168,6 +176,7 @@ class _LibraryScreenState extends State<LibraryScreen>
           BookSummaryCard(
             title: 'Atomic Habits',
             author: "Simon Sinek",
+            documentId: 'EakVkTRO0zLD1L6GyfsQ',
             imagePath: 'assets/book_cover2.png',
             description: 'James Clear',
           ),
@@ -175,6 +184,7 @@ class _LibraryScreenState extends State<LibraryScreen>
           BookSummaryCard(
             title: 'How to Make People Like You',
             author: "Simon Sinek",
+            documentId: 'EakVkTRO0zLD1L6GyfsQ',
             imagePath: 'assets/book_cover1.png',
             description: 'Nicholas Boothman',
           ),

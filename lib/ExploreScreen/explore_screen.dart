@@ -76,6 +76,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   BookSummaryCard(
                     imagePath: 'assets/book_cover1.png',
                     author: "Simon Sinek",
+                    documentId: 'EakVkTRO0zLD1L6GyfsQ',
                     title:
                         'What the Most Successful People Do Before Breakfast',
                     description:
@@ -86,6 +87,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                   BookSummaryCard(
                     imagePath: 'assets/book_cover2.png',
+                    documentId: 'EakVkTRO0zLD1L6GyfsQ',
                     title: 'The 12 Week Year',
                     author: "Simon Sinek",
                     description:
@@ -97,6 +99,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   BookSummaryCard(
                     imagePath: 'assets/book_cover1.png',
                     author: "Simon Sinek",
+                    documentId: 'EakVkTRO0zLD1L6GyfsQ',
                     title:
                         'What the Most Successful People Do Before Breakfast',
                     description:
@@ -108,6 +111,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   BookSummaryCard(
                     imagePath: 'assets/book_cover2.png',
                     author: "Simon Sinek",
+                    documentId: 'EakVkTRO0zLD1L6GyfsQ',
                     title: 'The 12 Week Year',
                     description:
                         'Get more done in 12 weeks than others do in 12 months',

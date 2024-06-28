@@ -130,7 +130,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   controller: _pageController,
                   itemCount: headlines.length,
                   itemBuilder: (context, index) {
-                    return Padding(
+                    return SingleChildScrollView(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

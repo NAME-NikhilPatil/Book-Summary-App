@@ -1,3 +1,4 @@
+import 'package:books_demo/BookDetailScreen/book_details.dart';
 import 'package:books_demo/book_bot/chat_page.dart';
 import 'package:books_demo/components/book_card.dart';
 import 'package:books_demo/constants/constants.dart';
@@ -65,7 +66,19 @@ class HomeScreen extends StatelessWidget {
                         const SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
-                            // Handle daily summary
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetailPage(
+                                    imagePath: 'assets/book_cover1.png',
+                                    title:
+                                        'What the Most Successful People Do Before Breakfast',
+                                    author: 'Laura Vanderkam',
+                                    description:
+                                        'A short guide to making over your mornings and life',
+                                    documentID: 'uqVjFbMhjw2TDtz9HINY',
+                                  ),
+                                ));
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: primaryColor,
@@ -144,18 +157,32 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     BookSummaryCard(
-                      imagePath: 'assets/start_with_why.jpg',
-                      title: 'Start with Why',
-                      author: 'Simon Sinek',
+                      imagePath: 'assets/book_cover1.png',
+                      title:
+                          'What the Most Successful People Do Before Breakfast',
+                      documentId: 'uqVjFbMhjw2TDtz9HINY',
+                      author: 'Laura Vanderkam',
                       description:
-                          'Discover the principles necessary for building a great team and allowing people to do what inspires them.',
+                          'A short guide to making over your mornings and life',
                     ),
                     SizedBox(
                       width: 12,
                     ),
                     BookSummaryCard(
-                      imagePath: 'assets/book_cover2.png',
+                      imagePath: 'assets/big_magic.jpg',
+                      title: 'Big Magic',
+                      documentId: 'Bv98REcBRfAhJTwCMZTx',
+                      author: 'Elizabeth Gilbert',
+                      description:
+                          'Discover the courage to harness your creativity and embark on a transformative journey of self expression',
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    BookSummaryCard(
+                      imagePath: 'assets/start_with_why.jpg',
                       title: 'The 12 Week Year',
+                      documentId: 'EakVkTRO0zLD1L6GyfsQ',
                       author: 'Simon Sinek',
                       description:
                           'Get more done in 12 weeks than others do in 12 months',
@@ -164,20 +191,10 @@ class HomeScreen extends StatelessWidget {
                       width: 12,
                     ),
                     BookSummaryCard(
-                      imagePath: 'assets/book_cover1.png',
-                      title:
-                          'What the Most Successful People Do Before Breakfast',
-                      author: 'Simon Sinek',
-                      description:
-                          'A short guide to making over your mornings and life',
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    BookSummaryCard(
                       imagePath: 'assets/book_cover2.png',
                       title: 'The 12 Week Year',
-                      author: 'Simon Sinek',
+                      author: 'Laura Vanderkam',
+                      documentId: 'uqVjFbMhjw2TDtz9HINY',
                       description:
                           'Get more done in 12 weeks than others do in 12 months',
                     ),

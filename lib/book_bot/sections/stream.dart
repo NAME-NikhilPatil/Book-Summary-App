@@ -60,7 +60,7 @@ class _SectionTextInputStreamState extends State<SectionTextStreamInput> {
                 selectable: true,
               );
             } else {
-              return const Center(child: Text('Search something!'));
+              return const Center(child: Text('Ask me Anything about Books!'));
             }
           },
         )),

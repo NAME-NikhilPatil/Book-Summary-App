@@ -9,12 +9,14 @@ class BookDetailPage extends StatelessWidget {
     required this.title,
     required this.description,
     required this.author,
+    required this.documentID,
   }) : super(key: key);
 
   final String imagePath;
   final String title;
   final String description;
   final String author;
+  final String documentID;
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +170,7 @@ class BookDetailPage extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => SummaryScreen(
                           title: title,
-                          documentId: 'EakVkTRO0zLD1L6GyfsQ',
+                          documentId: documentID,
                         ), // Replace with your BookDetails widget
                       ),
                     );
